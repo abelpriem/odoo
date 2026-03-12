@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+      <record id="action_iberaval_entity" model="ir.actions.act_window">
+        <field name="name">Entidades Financieras</field>
+        <field name="res_model">iberaval.entity</field>
+        <field name="view_mode">list, form</field>
+      </record>
+
+      <record id="action_iberaval_agency" model="ir.actions.act_window">
+        <field name="name">Agencias</field>
+        <field name="res_model">iberaval.agency</field>
+        <field name="view_mode">list, form</field>
+      </record>
+
+      <menuitem id="menu_iberaval_root" name="Iberaval" sequence="10"/>
+
+      <menuitem id="menu_iberaval_entity" name="Entidades" parent="menu_iberaval_root" action="action_iberaval_entity"></menuitem>
+      <menuitem id="menu_iberaval_agency" name="Agencias" parent="menu_iberaval_root" action="action_iberaval_agency"></menuitem>
+    </data>
+</odoo>

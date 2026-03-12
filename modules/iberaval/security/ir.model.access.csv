@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_iberaval_iberaval,iberaval.entity,model_iberaval_entity,base.group_user,1,1,1,1
+access_iberaval_agency,iberaval.agency,model_iberaval_agency,base.group_user,1,1,1,1
