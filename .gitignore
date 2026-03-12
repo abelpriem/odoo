@@ -41,6 +41,7 @@ tsconfig.json
 package-lock.json
 package.json
 .husky
+commands.md
 
 # various virtualenv
 /bin/
@@ -51,3 +52,5 @@ package.json
 /man/
 /share/
 /src/
+/venv/
+
