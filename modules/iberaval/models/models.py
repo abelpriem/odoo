@@ -3,7 +3,7 @@ from odoo import models, fields
 class IberavalEntity(models.Model):
     _name = "iberaval.entity"
     _description = "Entidad Financiera"
-    _rec_name="descri_entidad"
+    _rec_name="cod_entidad"
     
     cod_entidad = fields.Char(string="COD_ENTIDAD")
     descri_entidad = fields.Char(string="DESCRI_ENTIDAD", required=True)
@@ -37,7 +37,8 @@ class IberavalAgency(models.Model):
     # FK de Entidad
     entity_id = fields.Many2one('iberaval.entity', string="Entidad Financiera", required=True, ondelete="cascade")
     
-    cod_entidad = fields.Char(string="COD_ENTIDAD (Ref)", required=True)
+    cod_entidad = fields.Char(related="entity_id.cod_entidad", store=True, readonly=True)
+    descri_entidad = fields.Char(related="entity_id.descri_entidad", store=True, readonly=True)
     cod_agencia = fields.Char(string="COD_AGENCIA")
     descri_agencia = fields.Char(string="DESCRI_AGENCIA")
     grupo = fields.Char(string="GRUPO")

@@ -1,13 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+      <record id="view_iberaval_entity_tree" model="ir.ui.view">
+        <field name="name">iberaval.entity.tree</field>
+        <field name="model">iberaval.entity</field>
+        <field name="arch" type="xml">
+          <list string="Entidades Financieras">
+            <field name="cod_entidad" string="ID Entidad" />
+            <field name="descri_entidad" string="Nombre de la Entidad" />
+            <field name="nif" string="NIF" />
+            <field name="domicilio" string="Domicilio" />
+            <field name="telefono1" string="Contacto" />
+            <field name="g3_control" string="G3_CONTROL" />
+          </list>
+        </field>
+      </record>
       <record id="action_iberaval_entity" model="ir.actions.act_window">
         <field name="name">Entidades Financieras</field>
         <field name="res_model">iberaval.entity</field>
         <field name="view_mode">list,form</field>
       </record>
 
+      <record id="view_iberaval_agency_list" model="ir.ui.view">
+        <field name="name">iberaval.agency.tree</field>
+        <field name="model">iberaval.agency</field>
+        <field name="arch" type="xml">
+          <list string="Agencias Financieras">
+            <field name="cod_agencia" string="ID Agencia" />
+            <field name="descri_agencia" string="Nombre de la Agencia" />
+            <field name="domicilio" string="Domicilio" />
+            <field name="entity_id" string="Entidad Relacionada"/>
+          </list>
+        </field>
+      </record>
+
+      <record id="view_iberaval_agency_form" model="ir.ui.view">
+        <field name="name">iberaval.agency.form</field>
+        <field name="model">iberaval.agency</field>
+        <field name="arch" type="xml">
+            <form>
+              <sheet>
+                <group>
+                  <group string="Relación Entidad">
+                    <field name="cod_entidad"></field>
+                    <field name="descri_entidad"></field>
+                  </group>
+
+                  <group string="Identificación Agencia">
+                    <field name="cod_agencia"></field>
+                    <field name="descri_agencia"></field>
+                    <field name="nif"></field>
+                  </group>
+                </group>
+
+                <notebook>
+                  <page string="Localización">
+                    <group>
+                        <field name="domicilio"/>
+                        <field name="id_poblacion"/>
+                        <field name="cod_pais"/>
+                    </group>
+                  </page>
+                  <page string="Control G3">
+                    <group>
+                        <field name="g3_bloqueo"/>
+                        <field name="g3_control"/>
+                        <field name="g3_baja"/>
+                    </group>
+                  </page>
+                </notebook>
+              </sheet>
+            </form>
+        </field>
+      </record>
+
       <record id="action_iberaval_agency" model="ir.actions.act_window">
-        <field name="name">Agencias</field>
+        <field name="name">Agencias Financieras</field>
         <field name="res_model">iberaval.agency</field>
         <field name="view_mode">list,form</field>
       </record>
