@@ -1,14 +1,14 @@
 {
-    'name': "IBERAVAL",
+    'name': "Students",
 
-    'summary': "Datos con Entidades & Agencias",
+    'summary': "Curso ODOO de Udemy",
 
     'description': """
 Long description of module's purpose
     """,
 
-    'author': "Abel Prieto (Dev)",
-    'website': "https://www.iberaval.es",
+    'author': "Abel Prieto (Dev.)",
+    'website': "https://www.yourcompany.com",
     'application': True,
 
     # Categories can be used to filter modules in modules listing
