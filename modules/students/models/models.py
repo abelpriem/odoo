@@ -1,17 +1,9 @@
-# from odoo import models, fields, api
+from odoo import models, fields
 
-
-# class students(models.Model):
-#     _name = 'students.students'
-#     _description = 'students.students'
-
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
-
+class Students(models.Model):
+        _name = "students.info"
+        _description = "Estudiantes (Udemy)"
+        
+        nombre = fields.Char(string="Nombre del estudiante")
+        edad = fields.Char(string="Edad")
+        email = fields.Char(string="Email")
