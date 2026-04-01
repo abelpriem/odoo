@@ -1,26 +1,137 @@
 <odoo>
   <data>
-    <record id="action_students" model="ir.actions.act_window">
-      <field name="name">Students</field>
-      <field name="res_model">students.info</field>
-      <field name="view_mode">list,form</field>
-    </record>
 
     <record id="view_list_students" model="ir.ui.view">
-      <field name="name">Students</field>
+      <field name="name">students.info.list</field>
       <field name="model">students.info</field>
       <field name="arch" type="xml">
         <list>
-          <!-- <field name="nombre" />
-          <field name="apellido" />
-          <field name="edad" />
-          <field name="email" /> 
-          <field name="curso" />-->
           <field name="estudiante_id" />
           <field name="curso_id" />
           <field name="estado_calificacion" />
         </list>
       </field>
+    </record>
+
+    <record id="view_list_cursos" model="ir.ui.view">
+      <field name="name">cursos.stundets.list</field>
+      <field name="model">cursos.students</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="nombre_curso" />
+          <field name="profesor_id" />
+        </list>
+      </field>
+    </record>
+    <record id="view_list_asignaturas" model="ir.ui.view">
+      <field name="name">students.asignaturas.list</field>
+      <field name="model">students.asignaturas</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="nombre_asignatura" />
+        </list>
+      </field>
+    </record>
+
+    <record id="view_list_calificaciones" model="ir.ui.view">
+      <field name="name">students.calificaciones.list</field>
+      <field name="model">students.calificaciones</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="estudiante_id" />
+          <field name="asignatura_id" />
+          <field name="calificacion" />
+        </list>
+      </field>
+    </record>
+
+    <record id="view_form_students" model="ir.ui.view">
+      <field name="model">students.info</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <field name="estado_calificacion" widget="statusbar" options="{'clickable': 1}"/>
+          </header>
+          <sheet>
+            <group>
+              <group>
+                <field name="estudiante_id" />
+                <field name="curso_id" />
+                <field name="esta_aprobado" />
+              </group>
+
+              <group>
+                <field name="country_id" />
+                <field name="tag_id" widget="many2many_tags"/>
+                <field name="address" widget="url"/>
+              </group>
+            </group>
+
+            <notebook>
+              <page name="calification" string="Calificaciones">
+                <field name="calificaciones_ids">
+                  <list>
+                    <field name="asignatura_id" />
+                    <field name="calificacion" />
+                  </list>
+                </field>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+     <record id="view_form_cursos" model="ir.ui.view">
+      <field name="model">cursos.students</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="nombre_curso"/>
+              <field name="profesor_id" />
+            </group>
+            <notebook>
+              <page string="Asignaturas">
+                <field name="asignatura_ids" widget="many2many_tags"/>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="view_form_asignaturas" model="ir.ui.view">
+      <field name="model">students.asignaturas</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="nombre_asignatura"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="view_form_calificaciones" model="ir.ui.view">
+      <field name="model">students.calificaciones</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="estudiante_id"/>
+              <field name="asignatura_id"/>
+              <field name="calificacion"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+    <record id="action_students" model="ir.actions.act_window">
+      <field name="name">Estudiantes</field>
+      <field name="res_model">students.info</field>
+      <field name="view_mode">list,form</field>
     </record>
 
     <record id="action_cursos" model="ir.actions.act_window">
@@ -29,23 +140,30 @@
       <field name="view_mode">list,form</field>
     </record>
 
-    <record id="view_list_cursos" model="ir.ui.view">
-      <field name="name">Cursos</field>
-      <field name="model">cursos.students</field>
-      <field name="arch" type="xml">
-        <list>
-          <field name="nombre_curso" />
-        </list>
-      </field>
+    <record id="action_asignaturas" model="ir.actions.act_window">
+      <field name="name">Asignaturas</field>
+      <field name="res_model">students.asignaturas</field>
+      <field name="view_mode">list,form</field>
     </record>
 
-    <menuitem
-      id="menu_root_students"
-      name="Students"
-      sequence="10"
-      action="action_students"/>
+    <record id="action_profesores" model="ir.actions.act_window">
+      <field name="name">Profesores</field>
+      <field name="res_model">students.profesores</field>
+      <field name="view_mode">list,form</field>
+    </record>
 
-    <menuitem id="menu_students" name="Estudiantes" parent="menu_root_students" action="action_students" />
-    <menuitem id="menu_cursos" name="Cursos" parent="menu_root_students" action="action_cursos" />
+    <record id="action_calificaciones" model="ir.actions.act_window">
+      <field name="name">Calificaciones</field>
+      <field name="res_model">students.calificaciones</field>
+      <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_root_students" name="Students" sequence="10"/>
+
+    <menuitem id="menu_students" name="Estudiantes" parent="menu_root_students" action="action_students" sequence="10"/>
+    <menuitem id="menu_cursos" name="Cursos" parent="menu_root_students" action="action_cursos" sequence="20"/>
+    <menuitem id="menu_asignaturas" name="Asignaturas" parent="menu_root_students" action="action_asignaturas" sequence="30"/>
+    <menuitem id="menu_profesores" name="Profesores" parent="menu_root_students" action="action_profesores" sequence="40"/>
+    <menuitem id="menu_calificaciones" name="Calificaciones" parent="menu_root_students" action="action_calificaciones" sequence="50"/>
   </data>
 </odoo>
