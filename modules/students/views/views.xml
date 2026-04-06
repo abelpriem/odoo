@@ -29,6 +29,7 @@
       <field name="arch" type="xml">
         <list>
           <field name="nombre_asignatura" />
+          <field name="profesor_id" />
         </list>
       </field>
     </record>
@@ -108,6 +109,7 @@
           <sheet>
             <group>
               <field name="nombre_asignatura"/>
+              <field name="profesor_id" />
             </group>
           </sheet>
         </form>
@@ -126,6 +128,17 @@
             </group>
           </sheet>
         </form>
+      </field>
+    </record>
+
+    <record id="inherit_res_partner" model="ir.ui.view">
+      <field name="name">inherit_res_partner</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_partner_form"></field>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='category_id']" position="after">
+          <field name="es_profesor" />
+        </xpath>
       </field>
     </record>
     <record id="action_students" model="ir.actions.act_window">

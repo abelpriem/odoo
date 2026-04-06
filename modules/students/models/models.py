@@ -1,10 +1,11 @@
 from odoo import models, fields
+from odoo.exceptions import ValidationError
 class Students(models.Model):
     _name = "students.info"
     _description = "Estudiantes (Udemy)"
     _rec_name = "estudiante_id"
         
-    estudiante_id = fields.Many2one("res.partner", string="Estudiante", required=True)
+    estudiante_id = fields.Many2one("res.partner", string="Estudiante", required=True, domain=[("es_profesor", "=", False)])
     curso_id = fields.Many2one("cursos.students", string="Curso")
     esta_aprobado = fields.Boolean(string="¿Está aprobado?", default=False)
     comentarios = fields.Html(string="Comentarios")
@@ -21,6 +22,17 @@ class Students(models.Model):
         ]
     )
     
+    def create(self, vals):
+        res = super().create(vals)
+        
+        estudiante_id = int(vals.get("estudiante_id"))
+        existe_estudiante = self.env["students.info"].search([("estudiante_id", "=", estudiante_id)], limit=1)
+        
+        if existe_estudiante:
+            raise ValidationError("El estudiante ya está creado")
+        
+        res = super().create(vals)
+        return res
 class Cursos(models.Model):
     _name = "cursos.students"
     _description = "Cursos (Udemy)"
@@ -45,13 +57,14 @@ class Asignaturas(models.Model):
     _rec_name = "nombre_asignatura"
     
     nombre_asignatura = fields.Char(string="Asignatura", required=True)
+    profesor_id = fields.Many2one("students.profesores", string="Profesor", required=True)
     
 class Profesores(models.Model):
     _name = "students.profesores"
     _description = "Profesores (Udemy)"
-    _rec_name = "nombre_profesor"
+    _rec_name = "profesor_id"
     
-    nombre_profesor = fields.Many2one("res.partner", string="Profesor", required=True)
+    profesor_id = fields.Many2one("res.partner", string="Profesor", required=True, domain=[("es_profesor", "=", True)])
     
 class Calificaciones(models.Model):
     _name = "students.calificaciones"
@@ -61,4 +74,9 @@ class Calificaciones(models.Model):
     estudiante_id = fields.Many2one("students.info", string="Estudiante")
     asignatura_id = fields.Many2one("students.asignaturas", string="Asignatura")
     calificacion = fields.Float(string="Calificación")
+    
+class ResPartner(models.Model):
+    _inherit = "res.partner"
+    
+    es_profesor = fields.Boolean(string="¿Es profesor?", store=True)
     
