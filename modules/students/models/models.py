@@ -23,9 +23,7 @@ class Students(models.Model):
     )
     
     def create(self, vals):
-        res = super().create(vals)
-        
-        estudiante_id = int(vals.get("estudiante_id"))
+        estudiante_id = vals.get("estudiante_id")
         existe_estudiante = self.env["students.info"].search([("estudiante_id", "=", estudiante_id)], limit=1)
         
         if existe_estudiante:
@@ -33,6 +31,16 @@ class Students(models.Model):
         
         res = super().create(vals)
         return res
+    
+    def write(self, vals):
+        if "estudiante_id" in vals:
+            estudiante_id = vals.get("estudiante_id")
+            existe_estudiante = self.env["students.info"].search([("estudiante_id", "=", estudiante_id)], limit=1)
+            
+            if existe_estudiante:
+                raise ValidationError("El estudiante ya está creado")
+            
+        return super().write(vals)
 class Cursos(models.Model):
     _name = "cursos.students"
     _description = "Cursos (Udemy)"
