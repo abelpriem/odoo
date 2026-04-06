@@ -41,6 +41,14 @@ class Students(models.Model):
                 raise ValidationError("El estudiante ya está creado")
             
         return super().write(vals)
+    
+    def unlink(self):
+        for record in self:
+            if record.curso_id:
+                raise ValidationError("Este estudiante ya está asignado a un curso y no se puede eliminar")
+        
+        return super().unlink()
+    
 class Cursos(models.Model):
     _name = "cursos.students"
     _description = "Cursos (Udemy)"
