@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 class Students(models.Model):
     _name = "students.info"
@@ -22,17 +22,24 @@ class Students(models.Model):
         ]
     )
     
+    @api.model_create_multi 
     def create(self, vals):
-        estudiante_id = vals.get("estudiante_id")
-        existe_estudiante = self.env["students.info"].search([("estudiante_id", "=", estudiante_id)], limit=1)
+        """ Método de creación | Se le añaden validaciones para que, en caso de coincidir el estudiante_id
+        no coincida con un estudiante_id que ya esté creado en la BD. """
         
-        if existe_estudiante:
-            raise ValidationError("El estudiante ya está creado")
+        for val in vals:
+            estudiante_id = val.get("estudiante_id")
+            existe_estudiante = self.env["students.info"].search([("estudiante_id", "=", estudiante_id)], limit=1)
+            
+            if existe_estudiante:
+                raise ValidationError("El estudiante ya está creado")
         
-        res = super().create(vals)
-        return res
+            res = super().create(vals)
+            return res
     
     def write(self, vals):
+        """ Método de edición | Cuando editemos un contacto, comprobar que no se pueda cambiar de estudiante_id 
+        por uno que ya esté creado en BD. """
         if "estudiante_id" in vals:
             estudiante_id = vals.get("estudiante_id")
             existe_estudiante = self.env["students.info"].search([("estudiante_id", "=", estudiante_id)], limit=1)
@@ -43,11 +50,18 @@ class Students(models.Model):
         return super().write(vals)
     
     def unlink(self):
+        """ Método de eliminación | Cuando eliminemos un contacto, comprobar previamente que el estudiante NO tenga un 
+        curso asignado; si tiene curso, no se permite eliminar. """
         for record in self:
             if record.curso_id:
                 raise ValidationError("Este estudiante ya está asignado a un curso y no se puede eliminar")
         
         return super().unlink()
+    
+    def copy(self, default=None):
+        """ Método de duplicado | Directamente añadimos la validación de lanzar error para no permitir duplicar ningún
+        estudiante ya creado, evitando así duplicidades. """
+        raise ValidationError("No se puede duplicar registros")
     
 class Cursos(models.Model):
     _name = "cursos.students"
