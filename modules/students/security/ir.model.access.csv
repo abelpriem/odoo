@@ -4,3 +4,4 @@ access_students_cursos,students.cursos,model_cursos_students,base.group_user,1,1
 access_students_asignaturas,students.asignaturas,model_students_asignaturas,base.group_user,1,1,1,1
 access_students_profesores,students.profesores,model_students_profesores,base.group_user,1,1,1,1
 access_students_calificaciones,students.calificaciones,model_students_calificaciones,base.group_user,1,1,1,1
+access_wizard_calificaciones,access.wizard.calificaciones,model_wizard_calificaciones,base.group_user,1,1,1,1

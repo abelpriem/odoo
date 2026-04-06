@@ -15,11 +15,13 @@ class Students(models.Model):
     country_id = fields.Many2one("res.country", string="País", related='estudiante_id.country_id')
     tag_id = fields.Many2many("res.partner.category", string="Etiquetas")
     address = fields.Char(string="URL Google")
+    acta = fields.Char(string="Acta")
     estado_calificacion = fields.Selection(
         [
             ("suspenso","Suspenso"),
-            ("aprobado","Aprobado")
-        ]
+            ("aprobado","Aprobado"),
+            ("sin_calificar","Sin Calificar")
+        ], default="sin_calificar"
     )
     
     @api.model_create_multi 
@@ -63,6 +65,38 @@ class Students(models.Model):
         estudiante ya creado, evitando así duplicidades. """
         raise ValidationError("No se puede duplicar registros")
     
+    def aprobar(self):
+        """ Método para aprobar (acta final) | Levanta un pop-up (wizard) tipo formulario, con la etiqueta "Aprobar" y llama al modelo de wizard.calificaciones,
+        concretamente al método interno de aprobar. """
+        return {
+            "name": "Acta - Aprobar Estudiante",
+            "type": "ir.actions.act_window",
+            "view_mode": "form",
+            "view_id": self.env.ref('students.wizard_view_aprobar_form').id,
+            "res_model": "wizard.calificaciones",
+            "target": "new",
+            "context": {
+                # Con default_variable : self.id elegimos por defecto el seleccionado
+                "default_estudiante_id": self.id 
+            }
+        }
+        
+    def suspender(self):
+        """ Método para suspender (acta final) | Levanta un pop-up (wizard) tipo formulario, con la etiqueta "Suspender" y llama al modelo de wizard.calificaciones,
+        concretamente al método interno de suspender. """
+        return {
+            "name": "Acta - Suspender Estudiante",
+            "type": "ir.actions.act_window",
+            "view_mode": "form",
+            "view_id": self.env.ref('students.wizard_view_suspender_form').id,
+            "res_model": "wizard.calificaciones",
+            "target": "new",
+            "context": {
+                # Con default_variable : self.id elegimos por defecto el seleccionado
+                "default_estudiante_id": self.id 
+            }
+        }
+    
 class Cursos(models.Model):
     _name = "cursos.students"
     _description = "Cursos (Udemy)"
@@ -103,6 +137,7 @@ class Calificaciones(models.Model):
     
     estudiante_id = fields.Many2one("students.info", string="Estudiante")
     asignatura_id = fields.Many2one("students.asignaturas", string="Asignatura")
+    profesor_id = fields.Many2one("students.profesores", string="Profesor", related="asignatura_id.profesor_id")
     calificacion = fields.Float(string="Calificación")
     
 class ResPartner(models.Model):

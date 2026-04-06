@@ -52,6 +52,8 @@
         <form>
           <header>
             <field name="estado_calificacion" widget="statusbar" options="{'clickable': 1}"/>
+            <button type="object" string="Aprobar" name="aprobar" />
+            <button type="object" string="Suspender" name="suspender" />
           </header>
           <sheet>
             <group>
@@ -73,9 +75,14 @@
                 <field name="calificaciones_ids">
                   <list>
                     <field name="asignatura_id" />
+                    <field name="profesor_id" string="Calificado por" />
                     <field name="calificacion" />
                   </list>
                 </field>
+              </page>
+
+              <page name="Notas de Acta" >
+                <field name="acta" />
               </page>
             </notebook>
           </sheet>
@@ -127,6 +134,42 @@
               <field name="calificacion"/>
             </group>
           </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="wizard_view_aprobar_form" model="ir.ui.view">
+      <field name="name">Aprobar</field>
+      <field name="model">wizard.calificaciones</field>
+      <field name="arch" type="xml">
+        <form>
+          <group>
+            <field name="estudiante_id" readonly="1"/>
+            <field name="acta" />
+          </group>
+
+          <footer>
+            <button type="object" name="aprobado" string="Aprobar" class="btn btn-primary" />
+            <button special="cancel" string="Cancelar" />
+          </footer>
+        </form>
+      </field>
+    </record>
+
+    <record id="wizard_view_suspender_form" model="ir.ui.view">
+      <field name="name">Suspender</field>
+      <field name="model">wizard.calificaciones</field>
+      <field name="arch" type="xml">
+        <form>
+          <group>
+            <field name="estudiante_id" readonly="1"/>
+            <field name="acta" />
+          </group>
+
+          <footer>
+            <button type="object" name="suspender" string="Suspender" class="btn btn-primary" />
+            <button special="cancel" string="Cancelar" />
+          </footer>
         </form>
       </field>
     </record>
