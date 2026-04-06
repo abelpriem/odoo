@@ -24,32 +24,45 @@ class Students(models.Model):
         ], default="sin_calificar"
     )
     
-    @api.model_create_multi 
-    def create(self, vals):
-        """ Método de creación | Se le añaden validaciones para que, en caso de coincidir el estudiante_id
-        no coincida con un estudiante_id que ya esté creado en la BD. """
+    # @api.model_create_multi 
+    # def create(self, vals):
+    #     """ Método de creación | Se le añaden validaciones para que, en caso de coincidir el estudiante_id
+    #     no coincida con un estudiante_id que ya esté creado en la BD. """
         
-        for val in vals:
-            estudiante_id = val.get("estudiante_id")
-            existe_estudiante = self.env["students.info"].search([("estudiante_id", "=", estudiante_id)], limit=1)
+    #     for val in vals:
+    #         estudiante_id = val.get("estudiante_id")
+    #         existe_estudiante = self.env["students.info"].search([("estudiante_id", "=", estudiante_id)], limit=1)
             
-            if existe_estudiante:
-                raise ValidationError("El estudiante ya está creado")
+    #         if existe_estudiante:
+    #             raise ValidationError("El estudiante ya está creado")
         
-            res = super().create(vals)
-            return res
+    #         res = super().create(vals)
+    #         return res
     
-    def write(self, vals):
-        """ Método de edición | Cuando editemos un contacto, comprobar que no se pueda cambiar de estudiante_id 
-        por uno que ya esté creado en BD. """
-        if "estudiante_id" in vals:
-            estudiante_id = vals.get("estudiante_id")
-            existe_estudiante = self.env["students.info"].search([("estudiante_id", "=", estudiante_id)], limit=1)
+    # def write(self, vals):
+    #     """ Método de edición | Cuando editemos un contacto, comprobar que no se pueda cambiar de estudiante_id 
+    #     por uno que ya esté creado en BD. """
+    #     if "estudiante_id" in vals:
+    #         estudiante_id = vals.get("estudiante_id")
+    #         existe_estudiante = self.env["students.info"].search([("estudiante_id", "=", estudiante_id)], limit=1)
             
-            if existe_estudiante:
+    #         if existe_estudiante:
+    #             raise ValidationError("El estudiante ya está creado")
+            
+    #     return super().write(vals)
+    
+    @api.constrains("estudiante_id")
+    def _check_estudiante_id(self):
+        """ Método de validación mediante 'CONSTRAINS' | Se dispara ANTES de la consulta SQL pero DESPUÉS de las funciones create y write.   """
+        for record in self:
+            # Buscamos si hay OTROS registros con el mismo estudiante
+            count = self.search_count([
+                ("estudiante_id", "=", record.estudiante_id.id),  # .id porque es Many2one
+                ("id", "!=", record.id) # Que no sea YO mismo
+            ])
+            
+            if count > 0:
                 raise ValidationError("El estudiante ya está creado")
-            
-        return super().write(vals)
     
     def unlink(self):
         """ Método de eliminación | Cuando eliminemos un contacto, comprobar previamente que el estudiante NO tenga un 
