@@ -152,6 +152,20 @@ class Calificaciones(models.Model):
     asignatura_id = fields.Many2one("students.asignaturas", string="Asignatura")
     profesor_id = fields.Many2one("students.profesores", string="Profesor", related="asignatura_id.profesor_id")
     calificacion = fields.Float(string="Calificación")
+    estado = fields.Selection([
+        ("aprobado", "Aprobado"),
+        ("suspenso", "Suspenso")
+    ], compute="_check_calificacion", store=True)
+    
+    @api.depends("calificacion")
+    def _check_calificacion(self):
+        """ Método de lógica: 'DEPENDS' | Hacemos uso del api.depends para emplear lógica sobre una variable, en este caso 'califiación' y determinar una lógica
+        específica para hacer en un caso concreto. """
+        for record in self:
+            if record.calificacion < 5.00:
+                record.estado = "suspenso"
+            else:
+                record.estado = "aprobado"
     
 class ResPartner(models.Model):
     _inherit = "res.partner"

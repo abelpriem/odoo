@@ -42,6 +42,7 @@
           <field name="estudiante_id" />
           <field name="asignatura_id" />
           <field name="calificacion" />
+          <field name="estado" />
         </list>
       </field>
     </record>
@@ -77,6 +78,7 @@
                     <field name="asignatura_id" />
                     <field name="profesor_id" string="Calificado por" />
                     <field name="calificacion" />
+                    <field name="estado" string="Estado" />
                   </list>
                 </field>
               </page>
