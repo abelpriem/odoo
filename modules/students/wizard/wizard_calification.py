@@ -9,6 +9,8 @@ class WizardCalificaciones(models.TransientModel):
     acta = fields.Char(string="Acta")
     
     def aprobado(self):
+        """ Método aprobado (de wizard) | Validamos que se haya seleccionado un estudiante válido (id); nos traemos el objeto completo (student)
+        y si lo encuentra, actuamos modificando sus propiedades. """
         if not self.estudiante_id:
             raise ValidationError("No se ha seleccionado el estudiante")
         
@@ -21,6 +23,8 @@ class WizardCalificaciones(models.TransientModel):
             student.acta = self.acta
             
     def suspender(self):
+        """ Método suspender (de wizard) | Validamos que se haya seleccionado un estudiante válido (id); nos traemos el objeto completo (student)
+        y si lo encuentra, actuamos modificando sus propiedades. """
         if not self.estudiante_id:
             raise ValidationError("No se ha seleccionado el estudiante")
         

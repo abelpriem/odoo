@@ -16,6 +16,7 @@ class Students(models.Model):
     tag_id = fields.Many2many("res.partner.category", string="Etiquetas")
     address = fields.Char(string="URL Google")
     acta = fields.Char(string="Acta")
+    edad = fields.Integer(string="Edad")
     estado_calificacion = fields.Selection(
         [
             ("suspenso","Suspenso"),
@@ -53,7 +54,8 @@ class Students(models.Model):
     
     @api.constrains("estudiante_id")
     def _check_estudiante_id(self):
-        """ Método de validación mediante 'CONSTRAINS' | Se dispara ANTES de la consulta SQL pero DESPUÉS de las funciones create y write.   """
+        """ Método de validación mediante 'CONSTRAINS' | Se dispara ANTES de la consulta SQL pero DESPUÉS de las funciones create y write. 
+        Es necesario usarlo cuando la regla es sagrada. Si no se cumple, el registro no se guarda."""
         for record in self:
             # Buscamos si hay OTROS registros con el mismo estudiante
             count = self.search_count([
@@ -63,7 +65,17 @@ class Students(models.Model):
             
             if count > 0:
                 raise ValidationError("El estudiante ya está creado")
+            
+    @api.onchange("edad")
+    def _check_edad(self):
+        """ Método de cambios inmediatos 'ONCHANGE' | Establecemos una lógica que impida agregar una edad menor de 14 años en el campo
+        (variable) 'edad'; en el momento en el que no se cumpla, genera un cambio (change) sobre el formulario inmediato. """
+        for record in self:
+            if record.edad:
+                if record.edad < 14:
+                    raise ValidationError("La edad del estudiante debe ser mayor de 14 años")
     
+        
     def unlink(self):
         """ Método de eliminación | Cuando eliminemos un contacto, comprobar previamente que el estudiante NO tenga un 
         curso asignado; si tiene curso, no se permite eliminar. """
@@ -159,8 +171,8 @@ class Calificaciones(models.Model):
     
     @api.depends("calificacion")
     def _check_calificacion(self):
-        """ Método de lógica: 'DEPENDS' | Hacemos uso del api.depends para emplear lógica sobre una variable, en este caso 'califiación' y determinar una lógica
-        específica para hacer en un caso concreto. """
+        """ Método de lógica: 'DEPENDS' | Hacemos uso del api.depends para emplear lógica sobre una variable, en este caso 'califiación' y determinar que su
+        valor es el resultado de una fórmula. Si añades el atributo store=True, Odoo guarda el resultado en la base de datos """
         for record in self:
             if record.calificacion < 5.00:
                 record.estado = "suspenso"
