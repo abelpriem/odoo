@@ -45,6 +45,10 @@ class UserController(Controller):
     @route("/students/web", type="http", auth="public", csrf=False, website=True)
     def students_web(self):
         return request.render("students.view_students_web")
+    
+    @route("/view/calification", auth="public", type="http", csrf=False, website=True)
+    def view_calification(self):
+        return request.render("students.students_template_students")
         
     def _response(self, data, status=200):
         """ Método auxiliar para estrucutar la respuesta JSON"""

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates>
+    <t t-name="students.view_calification_student">
+        <h1>Hola Mundo</h1>
+    </t>
+</templates>

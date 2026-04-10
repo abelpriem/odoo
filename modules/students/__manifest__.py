@@ -25,12 +25,21 @@ Long description of module's purpose
         'security/ir.model.access.csv',
         'security/security.xml',
         'views/views.xml',
-        'views/views_student_web.xml'
+        'views/views_student_web.xml',
+        'views/views_student_template.xml'
         # 'views/templates.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
     ],
+    
+    'assets': {
+        "web.assets_frontend":[
+            "/students/static/src/xml/**/*.xml",
+            "/students/static/src/css/**/*.css",
+            "/students/static/src/js/**/*.js"
+        ]
+    }
 }
 

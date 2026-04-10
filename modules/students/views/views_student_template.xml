@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="students_template_students">
+        <t t-call="website.layout">
+            <owl-component name="students.student_component"></owl-component>
+        </t>
+    </template>
+
+</odoo>
