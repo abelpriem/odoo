@@ -48,9 +48,13 @@ class UserController(Controller):
     
     @route("/view/calification", auth="public", type="http", csrf=False, website=True)
     def view_calification(self):
-        sessionUser = request.env.user
+        session_user = request.env.user
+        partner_id = session_user.partner_id.id
+        student = request.env["students.info"].sudo().search("estudiante_id", "=", partner_id)
+        
         userInfo = {
-            "userName": sessionUser.partner_id.name
+            "userName": session_user.partner_id.name,
+            "estudiante_id": student.id or None
         }
         
         return request.render("students.students_template_students", userInfo)

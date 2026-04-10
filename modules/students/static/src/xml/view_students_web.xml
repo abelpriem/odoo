@@ -3,7 +3,13 @@
 <templates>
     <t t-name="students.view_calification_student">
         <h1>Hola <t t-esc="props.userName"/></h1>
-        <button t-on-click="openAlert">Pincha</button>
+        <h1>Edad: <t t-esc="state.edad"/></h1>
+        <div>
+            <button t-on-click="openAlert">Pincha</button>
+            <button t-on-click="viewNotification">Mostrar Notificacion</button>
+            <button t-on-click="changeNumber">Cambiar numero</button>
+        </div>
+        <h2>Numero: <t t-esc="state.number"/></h2>
 
         <input type="text" placeholder="Nombre" t-on-input="viewInput" />
     </t>
