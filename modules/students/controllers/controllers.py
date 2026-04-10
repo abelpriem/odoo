@@ -48,7 +48,12 @@ class UserController(Controller):
     
     @route("/view/calification", auth="public", type="http", csrf=False, website=True)
     def view_calification(self):
-        return request.render("students.students_template_students")
+        sessionUser = request.env.user
+        userInfo = {
+            "userName": sessionUser.partner_id.name
+        }
+        
+        return request.render("students.students_template_students", userInfo)
         
     def _response(self, data, status=200):
         """ Método auxiliar para estrucutar la respuesta JSON"""

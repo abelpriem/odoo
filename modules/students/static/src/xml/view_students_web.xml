@@ -2,6 +2,9 @@
 
 <templates>
     <t t-name="students.view_calification_student">
-        <h1>Hola Mundo</h1>
+        <h1>Hola <t t-esc="props.userName"/></h1>
+        <button t-on-click="openAlert">Pincha</button>
+
+        <input type="text" placeholder="Nombre" t-on-input="viewInput" />
     </t>
 </templates>
