@@ -9,6 +9,7 @@
           <field name="estudiante_id" />
           <field name="curso_id" />
           <field name="estado_calificacion" />
+          <field name="media_calificaciones" />
         </list>
       </field>
     </record>
@@ -62,6 +63,7 @@
                 <field name="estudiante_id" />
                 <field name="curso_id" />
                 <field name="esta_aprobado" />
+                <field name="media_calificaciones" />
               </group>
 
               <group>

@@ -3,7 +3,7 @@
 
     <template id="students_template_students">
         <t t-call="website.layout">
-            <owl-component name="students.student_component" t-att-props="json.dumps({'userName': userName, 'estudiante_id': estudiante_id})"></owl-component>
+            <owl-component name="students.student_component" t-att-props="userInfo"></owl-component>
         </t>
     </template>
 

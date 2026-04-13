@@ -17,6 +17,7 @@ class Students(models.Model):
     address = fields.Char(string="URL Google")
     acta = fields.Char(string="Acta")
     edad = fields.Integer(string="Edad")
+    media_calificaciones = fields.Float(string="Media Calificaciones", compute="_generate_media", store=True)
     estado_calificacion = fields.Selection(
         [
             ("suspenso","Suspenso"),
@@ -121,6 +122,20 @@ class Students(models.Model):
                 "default_estudiante_id": self.id 
             }
         }
+        
+    @api.depends("calificaciones_ids.calificacion")
+    def _generate_media(self):
+        for record in self:
+            lista_notas = []
+            
+            for nota in record.calificaciones_ids:
+                if nota.calificacion:
+                    lista_notas.append(nota.calificacion)
+                    
+            if lista_notas:
+                record.media_calificaciones = sum(lista_notas) / len(lista_notas)
+            else:
+                record.media_calificaciones = 0.00
     
 class Cursos(models.Model):
     _name = "cursos.students"
@@ -178,7 +193,7 @@ class Calificaciones(models.Model):
                 record.estado = "suspenso"
             else:
                 record.estado = "aprobado"
-    
+                
 class ResPartner(models.Model):
     _inherit = "res.partner"
     

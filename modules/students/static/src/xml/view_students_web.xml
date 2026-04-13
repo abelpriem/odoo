@@ -2,15 +2,49 @@
 
 <templates>
     <t t-name="students.view_calification_student">
-        <h1>Hola <t t-esc="props.userName"/></h1>
-        <h1>Edad: <t t-esc="state.edad"/></h1>
-        <div>
-            <button t-on-click="openAlert">Pincha</button>
-            <button t-on-click="viewNotification">Mostrar Notificacion</button>
-            <button t-on-click="changeNumber">Cambiar numero</button>
-        </div>
-        <h2>Numero: <t t-esc="state.number"/></h2>
+        <t t-if="state.student">
+            <div class="students-view">
+                <h1>Hola <t t-out="props.user_name"/></h1>
+                <h1>Edad: <t t-out="state.edad"/></h1>
+                <div>
+                    <input type="number" placeholder="Validar edad" t-ref="inputEdad" />
+                    <button t-on-click="validarEdad">Validar Edad</button>
+                </div>
+                
+                <!--<div>
+                    <button t-on-click="openAlert">Pincha</button>
+                    <button t-on-click="viewNotification">Mostrar Notificacion</button>
+                    <button t-on-click="changeNumber">Cambiar numero</button>
+                </div>
+                <h2>Numero: <t t-out="state.number"/></h2>
 
-        <input type="text" placeholder="Nombre" t-on-input="viewInput" />
+                <input type="text" placeholder="Nombre" t-on-input="viewInput" /> -->
+
+                <h3>Calificaciones</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Asignatura</th>
+                            <th>Profesor</th>
+                            <th>Calificación</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="state.calificaciones" t-as="c" t-key="c.id">
+                            <tr>
+                                <td t-out="c.asignatura_id[1]"></td>
+                                <td t-out="c.profesor_id[1]"></td>
+                                <td t-out="c.calificacion"></td>
+                                <td t-out="c.estado"></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+        <t t-else="">
+            <p>Cargando datos del estudiante...</p>
+        </t>
     </t>
 </templates>

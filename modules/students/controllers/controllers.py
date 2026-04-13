@@ -50,14 +50,16 @@ class UserController(Controller):
     def view_calification(self):
         session_user = request.env.user
         partner_id = session_user.partner_id.id
-        student = request.env["students.info"].sudo().search("estudiante_id", "=", partner_id)
+        student = request.env["students.info"].sudo().search([("estudiante_id", "=", partner_id)], limit=1)
         
-        userInfo = {
-            "userName": session_user.partner_id.name,
-            "estudiante_id": student.id or None
+        user_info = {
+            "user_name": session_user.partner_id.name,
+            "estudiante_id": student.id if student else None
         }
         
-        return request.render("students.students_template_students", userInfo)
+        return request.render("students.students_template_students", {
+            "userInfo": json.dumps(user_info)
+        })
         
     def _response(self, data, status=200):
         """ Método auxiliar para estrucutar la respuesta JSON"""
